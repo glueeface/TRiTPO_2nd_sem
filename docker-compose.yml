@@ -1,0 +1,24 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    command: python /bank_application/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/bank_application
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/bankdata/
+    env_file:
+      - db.env
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    ports: 
+      - '5430:5430'
+volumes:
+  postgres_data:
