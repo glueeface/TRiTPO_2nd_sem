@@ -12,55 +12,37 @@ class Status(models.Model):
 
 
 class Credit(models.Model):
+
     sum = models.IntegerField(help_text='Сумма кредита')
     currency = models.CharField(max_length=1, help_text='Валюта')
-    user = models.ForeinKey('Client', on_delete=models.PROTECT,
-                            help_text='Валюта')
     status = models.ForeignKey('Status', on_delete=models.PROTECT)
+
+    user = models.ForeinKey('Client', on_delete=models.PROTECT, help_text='Владелец заявки')
 
     time_create = models.DateTimeField(auto_now_add=True, verbose_name='Время создания заявки')
     time_update = models.DateTimeField(auto_now=True, verbose_name='Время изменения')
     is_active = models.BooleanField(default=True)
 
-class Client(models.Model):
-    # Full client name
-    name = models.CharField(max_length=50, help_text='Имя клиента')
-    patronymic = models.CharField(max_length=50, help_text='Отчество клиента')
-    surname = models.CharField(max_length=50, help_text='Фамилия клиента')
+class userProfile(models.Model):
+    # Full client name + auntification
+    user = models.OneToOneField(User,on_delete=models.CASCADE,related_name="profile")
 
     # Passport
     passport_seria = models.CharField(max_length=2, help_text='Серия паспорта клиента')
     pasport_id = models.IntegerField(help_text='Номер паспорта клиента')
 
     # location
-    location = models.CharField(max_length=50, help_text='Место жительства клиента')
     country = CountryField(help_text='Страна проживания клиента')
     city = models.CharField(max_length=50, help_text='Город проживания клиента')
     street = models.CharField(max_length=50, help_text='Улица проживания клиента')
     house_number = models.CharField(max_length=50, help_text='Номер дома клиента')
     apartnent_number = models.CharField(max_length=50, help_text='Номер квартиры клиента')
 
-    # contacts
-    email = models.CharField(max_length=50, help_text='Эл.почта клиента')
-    phone_number = models.IntegerField(help_text='Номер телефона клиента')
 
-    # auntification
+    def __str__(self):
+        return self.user.username
 
 
-    # default values
-    time_create = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
-    is_active = models.BooleanField(default=True)
-
-
-class Administrator(models.Model):
-    # Full admin name
-    name = models.CharField(max_length=50, help_text='Имя администратора')
-    patronymic = models.CharField(max_length=50, help_text='Отчество администратора')
-    surname = models.CharField(max_length=50, help_text='Фамилия администратора')
-
-    # auntification
-
-
-    # default values
-    time_create = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
-    is_active = models.BooleanField(default=True)
+# class Administrator(models.Model):
+#     # auntification
+#     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
