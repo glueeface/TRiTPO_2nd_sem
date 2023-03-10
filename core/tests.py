@@ -1,5 +1,5 @@
-from django.test import TestCase
-
+from rest_framework.test import APITestCase
+from django.urls import reverse
 class userProfileTestCase(APITestCase):
     profile_list_url=reverse('all-profiles')
     def setUp(self):

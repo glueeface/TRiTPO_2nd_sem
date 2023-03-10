@@ -3,7 +3,7 @@ from django.shortcuts import render
 from rest_framework.generics import (ListCreateAPIView,RetrieveUpdateDestroyAPIView,)
 from rest_framework.permissions import IsAuthenticated
 from .models import userProfile
-from .permissions import IsOwnerProfileOrReadOnly
+from .license import IsOwnerProfileOrReadOnly
 from .serializers import userProfileSerializer
 
 
@@ -13,7 +13,7 @@ class UserProfileListCreateView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        user=self.request.user
+        user = self.request.user
         serializer.save(user=user)
 
 

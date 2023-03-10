@@ -7,4 +7,4 @@ class userProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = userProfile
-        fields = '__all__'
+        exclude = 'country'
